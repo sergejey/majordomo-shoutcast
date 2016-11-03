@@ -1,0 +1,40 @@
+
+<!-- table zwave_devices search -->
+<div>
+ [ <a href="#" onClick="$('#api_settings').toggle();return false;"><#LANG_SETUP#></a> ]
+</div>
+<div style="display:none" id='api_settings'>
+&nbsp;
+<form action="?" method="post" enctype="multipart/form-data" name="frmEdit" class="form-horizontal">
+<fieldset>
+<div class="form-group">
+ <label class="control-label"[#if ERR_API_KEY#] style="color:red;font-weight:bold"[#endif#]>
+ API KEY:
+ (*)
+ </label>
+ <div class="controls"><input type="text" name="api_key" value="[#API_KEY#]" class="input"></div>
+</div>
+<div class="form-actions">
+<button type="submit" name="subm" value="Submit" class="btn btn-primary"><#LANG_UPDATE#></button>
+<input type="hidden" name="view_mode" value="update_settings">
+<input type="hidden" name="mode" value="update">
+</div>
+</fieldset>
+</form>
+</div>
+ <!-- action usual -->
+ <!-- table shoutcast_favorites search -->
+ [#if VIEW_MODE="search_shoutcast_favorites" || VIEW_MODE=""#]
+  [#inc shoutcast_favorites_search_admin.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table shoutcast_favorites search -->
+ <!-- table shoutcast_favorites edit -->
+ [#if VIEW_MODE="edit_shoutcast_favorites"#]
+   [#inc shoutcast_favorites_edit.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table shoutcast_favorites edit -->
+ <!-- table shoutcast_favorites view --> 
+ [#if VIEW_MODE="view_shoutcast_favorites"#]
+   [#inc shoutcast_favorites_view.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table shoutcast_favorites view -->

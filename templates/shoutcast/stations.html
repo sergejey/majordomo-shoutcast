@@ -1,0 +1,45 @@
+
+[#if FILTERS#]
+<script type="application/javascript">
+    function applyFilter(filter_name) {
+        if (filter_name=='') {
+            $('.station').show();
+        } else {
+            $('.station').hide();
+            $('.'+filter_name).show();
+        }
+    }
+</script>
+<div>
+<a href="#" onClick="return applyFilter('');"><#LANG_ALL#></a>
+[#begin FILTERS#]
+<b><a href="#" onClick="return applyFilter('[#CLASS#]');">[#TITLE#]</a></b>
+    &nbsp;&nbsp;&nbsp;
+[#end FILTERS#]
+</div>
+&nbsp;
+[#endif FILTERS#]
+
+<ul>
+    [#begin STATIONS#]
+    <li class="station [#CLASS#]">
+
+        [#if FAVORITE="1"#]
+        <img src="<#ROOTHTML#>img/btn/favorite.png" border="0">
+        [#endif#]
+        <a href="#" onClick="return playShoutCastStationNow('[#ID#]','[#TITLE_JS#]');" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-play"></i> PLAY</a>
+        <a href="#" onClick="return playShoutCastStation('[#ID#]','[#TITLE_JS#]');" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-play"></i> ...</a>
+
+
+        [#if FAVORITE="1"#]
+        <a href="?mode=favorites&remove=1&id=[#ID#]" class="btn btn-default btn-sm" onClick="return confirm('<#LANG_ARE_YOU_SURE#>');"><#LANG_DELETE#></a>
+        [#endif#]
+
+        [#TITLE#]
+
+        [#if GENRE!=""#]
+        ([#GENRE#])
+        [#endif#]
+    </li>
+    [#end STATIONS#]
+</ul>

@@ -1,0 +1,126 @@
+<!--# Action Usual #-->
+
+<script type="text/javascript">
+    var currentId=0;
+    function playShoutCastStation(id,title) {
+        currentId=id;
+        var url="?mode=play";
+        url+='&station_id='+id;
+        url+='&station_title='+title;
+        window.location.href=url;
+        return false;
+    }
+
+    function playShoutCastStationNow(id,title) {
+
+         currentId=id;
+         var url="?";
+         url+='mode=playnow&station_id='+id;
+         $('#now_play_title').html(title);
+         $('#now_play_id').html(id);
+         $('#now_play_add').html('');
+         $('#now_play_result').html();
+         $('#now_play').show();
+
+         $.ajax({
+         url: url
+         }).done(function(data) {
+          $('#now_play_result').html(data);
+         });
+
+
+        return false;
+    }
+
+    function addToFavoritesStation() {
+        var url="?";
+        url+='mode=favorites&station_id='+currentId+'&station_title='+encodeURIComponent($('#now_play_title').html());
+
+        $.ajax({
+            url: url
+        }).done(function(data) {
+            $('#now_play_add').html(' '+data);
+        });
+        return false;
+    }
+</script>
+
+
+
+<div>
+<ul class="nav nav-tabs">
+    <li [#if MODE==""#] class="active"[#endif#]><a href="?"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+    <li [#if MODE=="top"#] class="active"[#endif#]><a href="?mode=top"><i class="glyphicon glyphicon-tower"></i> Top 500</a></li>
+    <li [#if MODE=="genres"#] class="active"[#endif#]><a href="?mode=genres"><i class="glyphicon glyphicon-music"></i> Genres</a></li>
+    <li [#if MODE=="search"#] class="active"[#endif#]><a href="?mode=search"><i class="glyphicon glyphicon-search"></i> <#LANG_SEARCH#></a></li>
+    <li [#if MODE=="play"#] class="active"[#endif#]><a href="?mode=play"><i class="glyphicon glyphicon-play"></i> Playback</a></li>
+</ul>
+</div>
+
+<div id="now_play" style="display:none">
+    <h1 id="now_play_title"></h1>
+    <span id="now_play_result"></span>
+   [<a href="#" onClick="return addToFavoritesStation();">Add to favorites</a><span id="now_play_add"></span>]
+    [<a href="#" onClick="$('#now_play_code').toggle();return false;"><#LANG_CODE#></a>]
+    <div id="now_play_code" style="display:none">&nbsp;<pre>getURL(BASE_URL.ROOTHTML.'apps/shoutcast.html?mode=playnow&terminal=MAIN&station_id=<span id="now_play_id"></span>',0);</pre></div>
+</div>
+&nbsp;
+
+[#if MODE=="play"#]
+
+[#if TITLE!=""#]
+<h1>[#TITLE#]</h1>
+[#endif TITLE#]
+
+ [#if STREAM_URL!=""#]
+ [#else STREAM_URL#]
+    <p>Stream is not selected.</p>
+ [#endif STREAM_URL#]
+[#module name="app_player" action="" play="<#STREAM_URL#>" #]
+[#endif MODE#]
+
+[#if MODE==""#]
+ [#if STATIONS#]
+  [#inc stations.html#]
+ [#else#]
+<p>No items in favorites.</p>
+ [#endif STATIONS#]
+[#endif#]
+
+[#if MODE=="search"#]
+<form action="?" class="form-inline" method="get">
+    <div class="form-group">
+    <input type="text" name="search" value="<#SEARCH#>" class="form-control">
+    <input type="button" value="<#LANG_SEARCH#>" class="btn btn-default">
+    </div>
+    <input type="hidden" name="mode" value="<#MODE#>">
+</form>
+[#if STATIONS#]
+ [#inc stations.html#]
+[#endif STATIONS#]
+[#endif#]
+
+[#if MODE=="top"#]
+[#inc stations.html#]
+[#endif#]
+
+[#if MODE=="genres"#]
+
+[#if PARENT_ID!=""#]<p><a href="?mode=genres" onClick="history.go(-1);">&lt;&lt;&lt; <#LANG_BACK#></a></p>[#endif PARENT_ID#]
+
+    [#if TITLE!=""#]
+    <h1>[#TITLE#]</h1>
+    [#endif TITLE#]
+
+[#if GENRE!=""#]
+ [#inc stations.html#]
+[#else GENRE#]
+    [#begin GENRES#]
+        [#if HAS_CHILDREN="1"#]
+<a href="?mode=genres&parent_id=[#ID#]&title=[#TITLE_URL#]"><h2>[#TITLE#]</h2></a>
+        [#else#]
+<a href="?mode=genres&genre=[#ID#]&title=[#TITLE_URL#]"><h3>[#TITLE#]</h3></a>
+        [#endif#]
+    [#end GENRES#]
+[#endif#]
+[#endif GENRE#]
