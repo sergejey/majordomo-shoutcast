@@ -485,7 +485,7 @@ function api_call($path, $params=0) {
 *
 * @access private
 */
- function dbInstall() {
+ function dbInstall($data='') {
 /*
 shoutcast_favorites - 
 */
