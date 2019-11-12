@@ -405,7 +405,7 @@ function api_call($path, $params=0) {
             $url.='&'.$k.'='.urlencode($v);
         }
 
-    $cached_filename=ROOT.'cached/shoutcast_'.md5($url).'.txt';
+    $cached_filename=ROOT.'cms/cached/shoutcast_'.md5($url).'.txt';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -416,7 +416,7 @@ function api_call($path, $params=0) {
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
-    $tmpfname = ROOT . 'cached/cookie.txt';
+    $tmpfname = ROOT . 'cms/cached/cookie.txt';
     curl_setopt($ch, CURLOPT_COOKIEJAR, $tmpfname);
     curl_setopt($ch, CURLOPT_COOKIEFILE, $tmpfname);
 

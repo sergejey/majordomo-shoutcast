@@ -2,6 +2,14 @@
 
 <script type="text/javascript">
     var currentId=0;
+
+    [#if STATION_ID!=""#]
+    // [#TITLE#] - [#STATION_ID#]
+    $(document).ready(function() {
+        playShoutCastStationNow([#STATION_ID#],"[#TITLE#]");
+    });
+    [#endif STATION_ID#]
+
     function playShoutCastStation(id,title) {
         currentId=id;
         var url="?mode=play";
@@ -59,7 +67,7 @@
 
 <div id="now_play" style="display:none">
     <h1 id="now_play_title"></h1>
-    <span id="now_play_result"></span>
+    <div id="now_play_result"></div>
    [<a href="#" onClick="return addToFavoritesStation();">Add to favorites</a><span id="now_play_add"></span>]
     [<a href="#" onClick="$('#now_play_code').toggle();return false;"><#LANG_CODE#></a>]
     <div id="now_play_code" style="display:none">&nbsp;<pre>getURL(BASE_URL.ROOTHTML.'apps/shoutcast.html?mode=playnow&terminal=MAIN&station_id=<span id="now_play_id"></span>',0);</pre></div>
@@ -67,10 +75,6 @@
 &nbsp;
 
 [#if MODE=="play"#]
-
-[#if TITLE!=""#]
-<h1>[#TITLE#]</h1>
-[#endif TITLE#]
 
  [#if STREAM_URL!=""#]
  [#else STREAM_URL#]
