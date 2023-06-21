@@ -16,7 +16,7 @@ class shoutcast extends module {
 *
 * @access private
 */
-function shoutcast() {
+function __construct() {
   $this->name="shoutcast";
   $this->title="SHOUTCast";
   $this->module_category="<#LANG_SECTION_APPLICATIONS#>";
@@ -194,7 +194,7 @@ function usual(&$out) {
 
     if ($this->mode=='') {
         $stations=SQLSelect("SELECT STATION_ID as ID, TITLE, '1' as FAVORITE FROM shoutcast_favorites ORDER BY shoutcast_favorites.ID DESC");
-        if ($stations[0]['ID']) {
+        if (isset($stations[0])) {
             $total = count($stations);
             for ($i = 0; $i < $total; $i++) {
                 $stations[$i]['TITLE_URL']=urlencode($stations[$i]['TITLE']);
@@ -371,7 +371,7 @@ function parseStations($data) {
         $seen=array();
         $total = count($stations);
         for ($i = 0; $i < $total; $i++) {
-            if (!$seen[$stations[$i]['CLASS']]) {
+            if (!isset($seen[$stations[$i]['CLASS']])) {
                 $seen[$stations[$i]['CLASS']]=1;
                 $filters[]=array('CLASS'=>$stations[$i]['CLASS'],'TITLE'=>$stations[$i]['GENRE']);
             }
